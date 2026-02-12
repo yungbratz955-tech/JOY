@@ -10,127 +10,104 @@
         
         body { 
             margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; 
-            background: var(--bg); font-family: 'Arial', sans-serif; overflow: hidden;
+            background: var(--bg); font-family: sans-serif; overflow: hidden;
         }
+
+        /* Large Stationary Decor (Low Impact) */
+        .decor { position: fixed; font-size: 80px; opacity: 0.3; z-index: 1; }
+        .top-left { top: 10px; left: 10px; }
+        .bottom-right { bottom: 10px; right: 10px; }
 
         .card { 
-            background: rgba(255, 255, 255, 0.98); padding: 30px 20px; 
-            border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
-            text-align: center; width: 92%; max-width: 420px; z-index: 1000;
-            position: relative;
+            background: white; padding: 25px; border-radius: 30px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; 
+            width: 90%; max-width: 400px; z-index: 10;
         }
 
-        h1 { color: #c9184a; font-size: 1.4rem; margin-bottom: 20px; font-weight: 900; }
-
-        .btn-column { display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 250px; justify-content: center; }
+        h1 { color: #c9184a; font-size: 1.3rem; margin-bottom: 20px; }
+        .btn-column { display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 240px; justify-content: center; }
 
         button { 
-            padding: 18px; font-size: 1.1rem; border: none; border-radius: 20px; 
-            cursor: pointer; font-weight: 800; background: white; 
-            color: var(--primary); border: 3px solid var(--primary);
-            z-index: 1001;
+            padding: 16px; font-size: 1.1rem; border-radius: 15px; border: 3px solid var(--primary);
+            background: white; color: var(--primary); font-weight: bold; cursor: pointer;
         }
 
-        #yesBtn { position: absolute; background: var(--primary); color: white; width: 110px; left: 50%; transform: translateX(-50%); top: 10px; }
-        #noBtn { position: absolute; background: #000; color: white; border: none; width: 90px; left: 50%; transform: translateX(-50%); bottom: 10px; }
+        #yesBtn { position: absolute; background: var(--primary); color: white; width: 100px; left: 50%; transform: translateX(-50%); top: 10px; }
+        #noBtn { position: absolute; background: #000; color: white; border: none; width: 80px; left: 50%; transform: translateX(-50%); bottom: 10px; }
 
         #secretMessage { 
-            display: none; text-align: left; line-height: 1.6; color: #222; font-size: 1.1rem; 
-            padding: 20px; background: #fff; border-radius: 25px; border-top: 8px solid var(--primary);
-            overflow-y: auto; max-height: 350px;
+            display: none; text-align: left; line-height: 1.6; color: #333; 
+            padding: 15px; border-top: 5px solid var(--primary);
+            overflow-y: auto; max-height: 300px; font-size: 1.1rem;
         }
 
-        .emoji {
-            position: fixed; top: -150px; font-size: 100px;
-            pointer-events: none; z-index: 1;
-            animation: fall 3s linear forwards;
-            will-change: transform;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(120vh) rotate(360deg); }
-        }
-
-        .thunder-active { animation: flash 0.1s infinite; }
-        @keyframes flash { 0% { background: #000; } 50% { background: #333; } 100% { background: #000; } }
+        .burst { position: fixed; font-size: 100px; pointer-events: none; z-index: 100; animation: fadeOut 1s forwards; }
+        @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.5) translateY(-100px); } }
+        
+        .thunder { animation: flash 0.1s 5; }
+        @keyframes flash { 0%, 100% { background: #ffafbd; } 50% { background: #000; } }
     </style>
 </head>
-<body id="mainBody">
-    <div class="card" id="gameCard">
-        <h1 id="questionText">Level 1: When we first started, what was my biggest struggle?</h1>
-        <div id="options" class="btn-column">
+<body id="b">
+    <div class="decor top-left">🧸</div>
+    <div class="decor bottom-right">❤️</div>
+
+    <div class="card">
+        <h1 id="q">Level 1: When we first started, what was my biggest struggle?</h1>
+        <div id="opts" class="btn-column">
             <button onclick="wrong()">I couldn't find my way to your house.</button>
             <button onclick="next(2)">I was unsure if I really liked you because I was overthinking.</button>
             <button onclick="wrong()">I told myself I was too busy with "life" to be in love.</button>
         </div>
-        <div id="secretMessage"></div>
+        <div id="m" style="display:none"></div>
     </div>
 
     <script>
-        const body = document.getElementById('mainBody');
-        let emojiCount = 0;
-
-        function spawn(emoji) {
-            if (emojiCount > 12) return; // Hard limit to stop lag
-            emojiCount++;
+        function burst(emo) {
             const el = document.createElement('div');
-            el.className = 'emoji';
-            el.innerHTML = emoji;
-            el.style.left = Math.random() * 90 + 'vw';
+            el.className = 'burst';
+            el.innerHTML = emo;
+            el.style.left = '40vw'; el.style.top = '40vh';
             document.body.appendChild(el);
-            setTimeout(() => { el.remove(); emojiCount--; }, 3000);
+            setTimeout(() => el.remove(), 1000);
         }
-
-        setInterval(() => spawn(Math.random() > 0.5 ? '🧸' : '❤️'), 800);
 
         function wrong() { alert("Wrong! 😂"); }
 
-        function burst() {
-            for(let i=0; i<8; i++) {
-                setTimeout(() => spawn(Math.random() > 0.5 ? '🧸' : '❤️'), i * 100);
-            }
-        }
-
         function next(level) {
-            burst();
-            const q = document.getElementById('questionText');
-            const opt = document.getElementById('options');
+            burst('🧸');
+            const q = document.getElementById('q'), o = document.getElementById('opts');
             if (level === 2) {
-                q.innerHTML = "Level 2: Since you know me so well... what do I fear most?";
-                opt.innerHTML = `<button onclick="next(3)">Ur mom.</button><button onclick="wrong()">Losing u.</button><button onclick="wrong()">Class presentation.</button>`;
+                q.innerHTML = "Level 2: What do I fear most?";
+                o.innerHTML = `<button onclick="next(3)">Ur mom.</button><button onclick="wrong()">Losing u.</button><button onclick="wrong()">Class presentation.</button>`;
             } else if (level === 3) {
                 q.innerHTML = "Final Level: Will you be my Valentine, Joy?";
-                opt.innerHTML = `<button id="yesBtn" onclick="escape()" ontouchstart="escape()">YES!</button><button id="noBtn" onclick="trap()">No</button>`;
+                o.innerHTML = `<button id="yesBtn" onclick="esc()" ontouchstart="esc()">YES!</button><button id="noBtn" onclick="trap()">No</button>`;
             }
         }
 
-        function escape() {
-            const btn = document.getElementById('yesBtn');
-            btn.style.left = Math.random() * 70 + '%';
-            btn.style.top = Math.random() * 70 + '%';
+        function esc() {
+            const b = document.getElementById('yesBtn');
+            b.style.left = Math.random() * 70 + '%';
+            b.style.top = Math.random() * 70 + '%';
         }
 
         function trap() {
-            body.classList.add('thunder-active');
-            let storm = setInterval(() => spawn('😭'), 100);
+            document.getElementById('b').classList.add('thunder');
+            burst('😭');
             setTimeout(() => {
-                body.classList.remove('thunder-active');
-                clearInterval(storm);
+                document.getElementById('b').classList.remove('thunder');
                 alert("Did you really just hit no? 😭");
-                reset();
-            }, 1200);
-        }
-
-        function reset() {
-            document.getElementById('questionText').innerHTML = "Let's try that again Bunny...";
-            document.getElementById('options').innerHTML = `<button onclick="finish()" style="background:var(--primary);color:white;width:100%;font-size:1.5rem;">YES! ❤️</button>`;
+                document.getElementById('q').innerHTML = "Let's try that again Bunny...";
+                document.getElementById('opts').innerHTML = `<button onclick="finish()" style="background:var(--primary);color:white;width:100%">YES! ❤️</button>`;
+            }, 1000);
         }
 
         function finish() {
-            burst();
-            document.getElementById('questionText').innerHTML = "I LOVE YOU JOY ❤️";
-            document.getElementById('options').style.display = 'none';
-            const msg = document.getElementById('secretMessage');
+            burst('❤️');
+            document.getElementById('q').innerHTML = "I LOVE YOU JOY ❤️";
+            document.getElementById('opts').style.display = 'none';
+            const msg = document.getElementById('m');
             msg.style.display = 'block';
             msg.innerHTML = `When we started this I was still unsure like do I really like her or is she for keeps I was kinda confused for real but that day u pulled up like after me calling u out of the blue made me feel lucky and am deep into this like <b>I LOVE YOU JOY LIKE FOR REAL JOKES ASIDE AM OBSESSED NOW</b>.<br><br>U said that day u were all happy but I was more over flowed with happiness. Kinda cringe to do all this but unfortunately worth every sec in my life. Am finally in love and I ain't letting go sooner.`;
         }
