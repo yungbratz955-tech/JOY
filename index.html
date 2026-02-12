@@ -5,52 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Joy ❤️</title>
     <style>
-        :root { --primary: #ff4d6d; --bg: #ffafbd; }
+        :root { --primary: #ff4d6d; --bg: #fff0f3; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; 
-            background: var(--bg); font-family: sans-serif; overflow: hidden;
+            background: var(--bg); font-family: 'Arial', sans-serif; overflow: hidden;
         }
 
-        /* Large Stationary Decor (Low Impact) */
-        .decor { position: fixed; font-size: 80px; opacity: 0.3; z-index: 1; }
-        .top-left { top: 10px; left: 10px; }
-        .bottom-right { bottom: 10px; right: 10px; }
+        /* Floating Big Elements - Using CSS for smooth 60fps movement */
+        .bg-float {
+            position: fixed; z-index: 1; opacity: 0.5;
+            animation: floatAround 10s infinite ease-in-out alternate;
+            pointer-events: none;
+        }
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(40px, 80px) rotate(20deg); }
+        }
 
         .card { 
-            background: white; padding: 25px; border-radius: 30px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; 
-            width: 90%; max-width: 400px; z-index: 10;
+            background: rgba(255, 255, 255, 0.95); padding: 30px 20px; 
+            border-radius: 40px; box-shadow: 0 20px 50px rgba(255, 77, 109, 0.3); 
+            text-align: center; width: 92%; max-width: 400px; z-index: 100;
+            position: relative; border: 2px solid white;
         }
 
-        h1 { color: #c9184a; font-size: 1.3rem; margin-bottom: 20px; }
-        .btn-column { display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 240px; justify-content: center; }
+        h1 { color: #c9184a; font-size: 1.4rem; margin-bottom: 25px; line-height: 1.2; font-weight: 900; }
+        .btn-column { display: flex; flex-direction: column; gap: 15px; position: relative; min-height: 260px; justify-content: center; }
 
         button { 
-            padding: 16px; font-size: 1.1rem; border-radius: 15px; border: 3px solid var(--primary);
-            background: white; color: var(--primary); font-weight: bold; cursor: pointer;
+            padding: 18px; font-size: 1.1rem; border: none; border-radius: 25px; 
+            cursor: pointer; font-weight: 800; background: white; 
+            color: var(--primary); border: 3px solid var(--primary);
+            transition: transform 0.1s;
         }
 
-        #yesBtn { position: absolute; background: var(--primary); color: white; width: 100px; left: 50%; transform: translateX(-50%); top: 10px; }
-        #noBtn { position: absolute; background: #000; color: white; border: none; width: 80px; left: 50%; transform: translateX(-50%); bottom: 10px; }
+        #yesBtn { position: absolute; background: var(--primary); color: white; width: 110px; left: 50%; transform: translateX(-50%); top: 10px; z-index: 1000; }
+        #noBtn { position: absolute; background: #000; color: white; border: none; width: 90px; left: 50%; transform: translateX(-50%); bottom: 10px; }
 
         #secretMessage { 
-            display: none; text-align: left; line-height: 1.6; color: #333; 
-            padding: 15px; border-top: 5px solid var(--primary);
-            overflow-y: auto; max-height: 300px; font-size: 1.1rem;
+            display: none; text-align: left; line-height: 1.6; color: #222; font-size: 1.15rem; 
+            padding: 20px; background: #fff; border-radius: 25px; border-top: 8px solid var(--primary);
+            overflow-y: auto; max-height: 380px; -webkit-overflow-scrolling: touch;
         }
 
-        .burst { position: fixed; font-size: 100px; pointer-events: none; z-index: 100; animation: fadeOut 1s forwards; }
-        @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.5) translateY(-100px); } }
-        
-        .thunder { animation: flash 0.1s 5; }
-        @keyframes flash { 0%, 100% { background: #ffafbd; } 50% { background: #000; } }
+        /* The Thunder Flash */
+        .thunder-flash { animation: flash 0.1s 6; }
+        @keyframes flash { 0%, 100% { background: var(--bg); } 50% { background: #000; } }
+
+        b { color: var(--primary); }
     </style>
 </head>
 <body id="b">
-    <div class="decor top-left">🧸</div>
-    <div class="decor bottom-right">❤️</div>
+    <div class="bg-float" style="font-size: 150px; top: -20px; left: -20px;">🧸</div>
+    <div class="bg-float" style="font-size: 120px; bottom: 20px; right: -20px; animation-delay: -2s;">❤️</div>
+    <div class="bg-float" style="font-size: 100px; top: 40%; right: -30px; animation-delay: -5s;">🧸</div>
 
     <div class="card">
         <h1 id="q">Level 1: When we first started, what was my biggest struggle?</h1>
@@ -59,23 +69,17 @@
             <button onclick="next(2)">I was unsure if I really liked you because I was overthinking.</button>
             <button onclick="wrong()">I told myself I was too busy with "life" to be in love.</button>
         </div>
-        <div id="m" style="display:none"></div>
+        <div id="m"></div>
     </div>
 
     <script>
-        function burst(emo) {
-            const el = document.createElement('div');
-            el.className = 'burst';
-            el.innerHTML = emo;
-            el.style.left = '40vw'; el.style.top = '40vh';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
+        function wrong() { 
+            document.getElementById('b').style.background = "#ff4d6d";
+            setTimeout(() => document.getElementById('b').style.background = "#fff0f3", 100);
+            alert("Wrong! 😂"); 
         }
 
-        function wrong() { alert("Wrong! 😂"); }
-
         function next(level) {
-            burst('🧸');
             const q = document.getElementById('q'), o = document.getElementById('opts');
             if (level === 2) {
                 q.innerHTML = "Level 2: What do I fear most?";
@@ -87,28 +91,28 @@
         }
 
         function esc() {
-            const b = document.getElementById('yesBtn');
-            b.style.left = Math.random() * 70 + '%';
-            b.style.top = Math.random() * 70 + '%';
+            const btn = document.getElementById('yesBtn');
+            btn.style.left = Math.random() * 70 + '%';
+            btn.style.top = Math.random() * 70 + '%';
         }
 
         function trap() {
-            document.getElementById('b').classList.add('thunder');
-            burst('😭');
+            document.getElementById('b').classList.add('thunder-flash');
             setTimeout(() => {
-                document.getElementById('b').classList.remove('thunder');
-                alert("Did you really just hit no? 😭");
+                document.getElementById('b').classList.remove('thunder-flash');
+                alert("Did you really just hit no? 😭 😭 😭");
                 document.getElementById('q').innerHTML = "Let's try that again Bunny...";
-                document.getElementById('opts').innerHTML = `<button onclick="finish()" style="background:var(--primary);color:white;width:100%">YES! ❤️</button>`;
-            }, 1000);
+                document.getElementById('opts').innerHTML = `<button onclick="finish()" style="background:var(--primary);color:white;width:100%;font-size:1.5rem;padding:20px">YES! ❤️</button>`;
+            }, 800);
         }
 
         function finish() {
-            burst('❤️');
             document.getElementById('q').innerHTML = "I LOVE YOU JOY ❤️";
             document.getElementById('opts').style.display = 'none';
             const msg = document.getElementById('m');
             msg.style.display = 'block';
+            msg.className = 'secretMessage'; // Uses the style defined above
+            msg.style.cssText = "display:block; text-align:left; line-height:1.6; color:#222; font-size:1.15rem; padding:20px; background:#fff; border-radius:25px; border-top:8px solid #ff4d6d; overflow-y:auto; max-height:380px;";
             msg.innerHTML = `When we started this I was still unsure like do I really like her or is she for keeps I was kinda confused for real but that day u pulled up like after me calling u out of the blue made me feel lucky and am deep into this like <b>I LOVE YOU JOY LIKE FOR REAL JOKES ASIDE AM OBSESSED NOW</b>.<br><br>U said that day u were all happy but I was more over flowed with happiness. Kinda cringe to do all this but unfortunately worth every sec in my life. Am finally in love and I ain't letting go sooner.`;
         }
     </script>
