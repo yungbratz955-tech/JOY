@@ -13,39 +13,43 @@
             background: var(--bg); font-family: 'Arial', sans-serif; overflow: hidden; transition: 0.2s;
         }
 
-        .thunder { animation: flash 0.15s infinite; }
-        @keyframes flash { 0% { background: #000; } 50% { background: #333; } 100% { background: #000; } }
+        .thunder { animation: flash 0.1s infinite; }
+        @keyframes flash { 0% { background: #000; } 50% { background: #555; } 100% { background: #000; } }
 
         .card { 
-            background: rgba(255, 255, 255, 0.95); padding: 30px 20px; 
-            border-radius: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
-            text-align: center; width: 92%; max-width: 400px; z-index: 100;
+            background: rgba(255, 255, 255, 0.98); padding: 30px 20px; 
+            border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+            text-align: center; width: 92%; max-width: 420px; z-index: 100;
             display: flex; flex-direction: column; max-height: 85vh;
         }
 
-        h1 { color: #c9184a; font-size: 1.4rem; margin-bottom: 20px; line-height: 1.2; flex-shrink: 0; }
+        h1 { color: #c9184a; font-size: 1.6rem; margin-bottom: 20px; line-height: 1.2; font-weight: 900; }
 
-        .btn-column { display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 250px; justify-content: center; flex-shrink: 0; }
+        .btn-column { display: flex; flex-direction: column; gap: 15px; position: relative; min-height: 280px; justify-content: center; }
 
         button { 
-            padding: 18px; font-size: 1.1rem; border: none; border-radius: 20px; 
-            cursor: pointer; font-weight: 800; transition: 0.2s; 
-            background: white; color: var(--primary); border: 3px solid var(--primary);
+            padding: 22px; font-size: 1.2rem; border: none; border-radius: 25px; 
+            cursor: pointer; font-weight: 900; transition: 0.2s; 
+            background: white; color: var(--primary); border: 4px solid var(--primary);
         }
 
-        #yesBtn { position: absolute; background: var(--primary); color: white; width: 110px; z-index: 200; left: 50%; transform: translateX(-50%); top: 10px; }
-        #noBtn { position: absolute; background: #000; color: white; border: none; width: 90px; left: 50%; transform: translateX(-50%); bottom: 10px; }
+        #yesBtn { position: absolute; background: var(--primary); color: white; width: 130px; z-index: 200; left: 50%; transform: translateX(-50%); }
+        #noBtn { position: absolute; background: #000; color: white; border: none; width: 100px; left: 50%; transform: translateX(-50%); bottom: 5px; }
 
-        .glow-up { background: var(--primary) !important; color: white !important; font-size: 1.6rem !important; animation: bounce 0.8s infinite; border: none !important; margin-top: 10px; }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .glow-up { background: var(--primary) !important; color: white !important; font-size: 1.8rem !important; animation: pulse 0.6s infinite; border: none !important; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
         #secretMessage { 
-            display: none; text-align: left; line-height: 1.6; color: #333; font-size: 1.1rem; 
-            padding: 20px; background: #fff5f7; border-radius: 20px; border-top: 6px solid var(--primary);
-            overflow-y: auto; max-height: 350px; -webkit-overflow-scrolling: touch;
+            display: none; text-align: left; line-height: 1.7; color: #222; font-size: 1.2rem; 
+            padding: 25px; background: #fff; border-radius: 30px; border-top: 10px solid var(--primary);
+            overflow-y: auto; max-height: 400px; -webkit-overflow-scrolling: touch;
         }
 
-        .huge-emoji { position: fixed; pointer-events: none; z-index: 9999; }
+        .massive-emoji { 
+            position: fixed; pointer-events: none; z-index: 9999; 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            will-change: transform;
+        }
     </style>
 </head>
 <body>
@@ -60,35 +64,36 @@
     </div>
 
     <script>
-        function spawn(emoji, size) {
+        function spawn(emoji, minSize, maxSize, speed) {
             const el = document.createElement('div');
             el.innerHTML = emoji;
-            el.className = 'huge-emoji';
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = '-200px';
+            el.className = 'massive-emoji';
+            el.style.left = (Math.random() * 110 - 5) + 'vw';
+            el.style.top = '-250px';
+            const size = Math.random() * (maxSize - minSize) + minSize;
             el.style.fontSize = size + 'px';
             document.body.appendChild(el);
 
             el.animate([
-                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                { transform: `translateY(120vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-            ], { duration: 2500, easing: 'ease-in' }).onfinish = () => el.remove();
+                { transform: 'translateY(0) scale(0.5) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(125vh) scale(1.2) rotate(${Math.random() * 1000 - 500}deg)`, opacity: 0 }
+            ], { duration: speed, easing: 'ease-in' }).onfinish = () => el.remove();
         }
 
-        // Constant Rain of HUGE Hearts and Bears
-        setInterval(() => spawn('🧸', Math.random() * 100 + 80), 700);
-        setInterval(() => spawn('❤️', Math.random() * 100 + 80), 900);
+        // CONSTANT RAIN OF GIANTS
+        setInterval(() => spawn('🧸', 150, 250, 3000), 800);
+        setInterval(() => spawn('❤️', 150, 250, 3500), 1000);
 
         function wrong() {
             document.body.style.background = "red";
             setTimeout(() => document.body.style.background = "#ffafbd", 100);
-            alert("Wrong! Try again, Joy! 😂");
+            alert("WRONG! Try again, Joy! 😂");
         }
 
         function massiveBurst() {
-            for(let i=0; i<40; i++) {
-                const emoji = Math.random() > 0.5 ? '🧸' : '❤️';
-                setTimeout(() => spawn(emoji, Math.random() * 150 + 100), i * 30);
+            for(let i=0; i<50; i++) {
+                const emo = Math.random() > 0.5 ? '🧸' : '❤️';
+                setTimeout(() => spawn(emo, 200, 350, 2000), i * 25);
             }
         }
 
@@ -97,20 +102,22 @@
             const q = document.getElementById('questionText');
             const opt = document.getElementById('options');
             
-            if (level === 2) {
-                q.innerHTML = "Level 2: Since you know me so well... what do I fear most?";
-                opt.innerHTML = `
-                    <button onclick="next(3)">Ur mom.</button>
-                    <button onclick="wrong()">Losing u.</button>
-                    <button onclick="wrong()">Class presentation.</button>
-                `;
-            } else if (level === 3) {
-                q.innerHTML = "Final Level: Will you be my Valentine, Joy?";
-                opt.innerHTML = `
-                    <button id="yesBtn" onclick="escape()" ontouchstart="escape()">YES!</button>
-                    <button id="noBtn" onclick="trap()">No</button>
-                `;
-            }
+            setTimeout(() => {
+                if (level === 2) {
+                    q.innerHTML = "Level 2: Since you know me so well... what do I fear most?";
+                    opt.innerHTML = `
+                        <button onclick="next(3)">Ur mom.</button>
+                        <button onclick="wrong()">Losing u.</button>
+                        <button onclick="wrong()">Class presentation.</button>
+                    `;
+                } else if (level === 3) {
+                    q.innerHTML = "Final Level: Will you be my Valentine, Joy?";
+                    opt.innerHTML = `
+                        <button id="yesBtn" onclick="escape()" ontouchstart="escape()">YES!</button>
+                        <button id="noBtn" onclick="trap()">No</button>
+                    `;
+                }
+            }, 200);
         }
 
         function escape() {
@@ -121,7 +128,7 @@
 
         function trap() {
             document.body.classList.add('thunder');
-            let s = setInterval(() => spawn('😭', Math.random() * 150 + 100), 40);
+            let s = setInterval(() => spawn('😭', 200, 400, 1000), 50);
             setTimeout(() => {
                 document.body.classList.remove('thunder');
                 clearInterval(s);
