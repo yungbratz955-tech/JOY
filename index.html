@@ -20,7 +20,7 @@
             background: rgba(255, 255, 255, 0.95); padding: 30px 20px; 
             border-radius: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
             text-align: center; width: 92%; max-width: 400px; z-index: 100;
-            display: flex; flex-direction: column; max-height: 90vh;
+            display: flex; flex-direction: column; max-height: 85vh;
         }
 
         h1 { color: #c9184a; font-size: 1.4rem; margin-bottom: 20px; line-height: 1.2; flex-shrink: 0; }
@@ -42,7 +42,7 @@
         #secretMessage { 
             display: none; text-align: left; line-height: 1.6; color: #333; font-size: 1.1rem; 
             padding: 20px; background: #fff5f7; border-radius: 20px; border-top: 6px solid var(--primary);
-            overflow-y: auto; max-height: 400px; -webkit-overflow-scrolling: touch;
+            overflow-y: auto; max-height: 350px; -webkit-overflow-scrolling: touch;
         }
 
         .huge-emoji { position: fixed; pointer-events: none; z-index: 9999; }
@@ -65,7 +65,7 @@
             el.innerHTML = emoji;
             el.className = 'huge-emoji';
             el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = '-150px';
+            el.style.top = '-200px';
             el.style.fontSize = size + 'px';
             document.body.appendChild(el);
 
@@ -75,9 +75,9 @@
             ], { duration: 2500, easing: 'ease-in' }).onfinish = () => el.remove();
         }
 
-        // Background Atmosphere - Mix of Teddy Bears and Hearts
-        setInterval(() => spawn('🧸', Math.random() * 60 + 30), 600);
-        setInterval(() => spawn('❤️', 20), 1000);
+        // Constant Rain of HUGE Hearts and Bears
+        setInterval(() => spawn('🧸', Math.random() * 100 + 80), 700);
+        setInterval(() => spawn('❤️', Math.random() * 100 + 80), 900);
 
         function wrong() {
             document.body.style.background = "red";
@@ -85,14 +85,15 @@
             alert("Wrong! Try again, Joy! 😂");
         }
 
-        function teddyBurst() {
-            for(let i=0; i<35; i++) {
-                setTimeout(() => spawn('🧸', Math.random() * 90 + 50), i * 30);
+        function massiveBurst() {
+            for(let i=0; i<40; i++) {
+                const emoji = Math.random() > 0.5 ? '🧸' : '❤️';
+                setTimeout(() => spawn(emoji, Math.random() * 150 + 100), i * 30);
             }
         }
 
         function next(level) {
-            teddyBurst();
+            massiveBurst();
             const q = document.getElementById('questionText');
             const opt = document.getElementById('options');
             
@@ -120,7 +121,7 @@
 
         function trap() {
             document.body.classList.add('thunder');
-            let s = setInterval(() => spawn('😭', Math.random() * 100 + 60), 40);
+            let s = setInterval(() => spawn('😭', Math.random() * 150 + 100), 40);
             setTimeout(() => {
                 document.body.classList.remove('thunder');
                 clearInterval(s);
@@ -135,7 +136,7 @@
         }
 
         function finish() {
-            teddyBurst();
+            massiveBurst();
             document.getElementById('questionText').innerHTML = "I LOVE YOU JOY ❤️";
             document.getElementById('options').style.display = 'none';
             const msg = document.getElementById('secretMessage');
