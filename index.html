@@ -5,46 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Joy ❤️</title>
     <style>
-        :root { --primary: #ff4d6d; --dark: #1a1a1a; }
+        :root { --primary: #ff4d6d; --bg: #ffafbd; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; 
-            background: #ffafbd; font-family: 'Arial', sans-serif; overflow: hidden; transition: background 0.2s;
+            background: var(--bg); font-family: 'Arial', sans-serif; overflow: hidden; transition: 0.2s;
         }
 
-        /* THUNDERSTORM EFFECT */
         .thunder { animation: flash 0.15s infinite; }
         @keyframes flash { 0% { background: #000; } 50% { background: #333; } 100% { background: #000; } }
 
         .card { 
-            background: rgba(255, 255, 255, 0.95); padding: 35px 20px; 
-            border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
+            background: rgba(255, 255, 255, 0.95); padding: 30px 20px; 
+            border-radius: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
             text-align: center; width: 92%; max-width: 400px; z-index: 100;
+            display: flex; flex-direction: column; max-height: 90vh;
         }
 
-        h1 { color: #c9184a; font-size: 1.5rem; margin-bottom: 25px; line-height: 1.2; }
+        h1 { color: #c9184a; font-size: 1.4rem; margin-bottom: 20px; line-height: 1.2; flex-shrink: 0; }
 
-        .btn-column { display: flex; flex-direction: column; gap: 15px; position: relative; min-height: 280px; justify-content: center; }
+        .btn-column { display: flex; flex-direction: column; gap: 12px; position: relative; min-height: 250px; justify-content: center; flex-shrink: 0; }
 
         button { 
-            padding: 22px; font-size: 1.2rem; border: none; border-radius: 25px; 
+            padding: 18px; font-size: 1.1rem; border: none; border-radius: 20px; 
             cursor: pointer; font-weight: 800; transition: 0.2s; 
             background: white; color: var(--primary); border: 3px solid var(--primary);
         }
 
-        #yesBtn { position: absolute; background: var(--primary); color: white; width: 130px; z-index: 200; left: 50%; transform: translateX(-50%); top: 10px; }
-        #noBtn { position: absolute; background: #000; color: white; border: none; width: 100px; left: 50%; transform: translateX(-50%); bottom: 10px; }
+        #yesBtn { position: absolute; background: var(--primary); color: white; width: 110px; z-index: 200; left: 50%; transform: translateX(-50%); top: 10px; }
+        #noBtn { position: absolute; background: #000; color: white; border: none; width: 90px; left: 50%; transform: translateX(-50%); bottom: 10px; }
 
-        .glow-up { background: var(--primary) !important; color: white !important; font-size: 1.8rem !important; animation: bounce 0.8s infinite; border: none !important; }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .glow-up { background: var(--primary) !important; color: white !important; font-size: 1.6rem !important; animation: bounce 0.8s infinite; border: none !important; margin-top: 10px; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
         #secretMessage { 
-            display: none; text-align: left; line-height: 1.6; color: #333; font-size: 1.2rem; 
-            padding: 25px; background: white; border-radius: 25px; border-top: 8px solid var(--primary);
+            display: none; text-align: left; line-height: 1.6; color: #333; font-size: 1.1rem; 
+            padding: 20px; background: #fff5f7; border-radius: 20px; border-top: 6px solid var(--primary);
+            overflow-y: auto; max-height: 400px; -webkit-overflow-scrolling: touch;
         }
 
-        .huge-emoji { position: fixed; pointer-events: none; z-index: 9999; filter: drop-shadow(0 0 10px rgba(0,0,0,0.2)); }
+        .huge-emoji { position: fixed; pointer-events: none; z-index: 9999; }
     </style>
 </head>
 <body>
@@ -74,23 +75,24 @@
             ], { duration: 2500, easing: 'ease-in' }).onfinish = () => el.remove();
         }
 
-        // Constant Rain of Huge Hearts
-        setInterval(() => spawn('❤️', Math.random() * 80 + 40), 400);
+        // Background Atmosphere - Mix of Teddy Bears and Hearts
+        setInterval(() => spawn('🧸', Math.random() * 60 + 30), 600);
+        setInterval(() => spawn('❤️', 20), 1000);
 
         function wrong() {
             document.body.style.background = "red";
             setTimeout(() => document.body.style.background = "#ffafbd", 100);
-            alert("WRONG! Try again, Joy! 😂");
+            alert("Wrong! Try again, Joy! 😂");
         }
 
-        function burst() {
-            for(let i=0; i<40; i++) {
-                setTimeout(() => spawn('❤️', Math.random() * 100 + 50), i * 20);
+        function teddyBurst() {
+            for(let i=0; i<35; i++) {
+                setTimeout(() => spawn('🧸', Math.random() * 90 + 50), i * 30);
             }
         }
 
         function next(level) {
-            burst();
+            teddyBurst();
             const q = document.getElementById('questionText');
             const opt = document.getElementById('options');
             
@@ -118,7 +120,7 @@
 
         function trap() {
             document.body.classList.add('thunder');
-            let s = setInterval(() => spawn('😭', Math.random() * 120 + 60), 40);
+            let s = setInterval(() => spawn('😭', Math.random() * 100 + 60), 40);
             setTimeout(() => {
                 document.body.classList.remove('thunder');
                 clearInterval(s);
@@ -133,7 +135,7 @@
         }
 
         function finish() {
-            burst();
+            teddyBurst();
             document.getElementById('questionText').innerHTML = "I LOVE YOU JOY ❤️";
             document.getElementById('options').style.display = 'none';
             const msg = document.getElementById('secretMessage');
